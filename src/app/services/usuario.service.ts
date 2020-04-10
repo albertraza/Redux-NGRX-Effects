@@ -13,4 +13,7 @@ export class UsuarioService {
 	getUsers() {
 		return this.http.get(`${this.baseUrl}/users?per_page=7`).pipe(map((data: any) => data.data));
 	}
+	getUser(id: string) {
+		return this.http.get(`${this.baseUrl}/users/${id}`).pipe(map((data: any) => data.data));
+	}
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UsuarioService } from '../../services/usuario.service';
 import { Subscription } from 'rxjs';
 import { Usuario } from '../../models/usuario.model';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { cargarUsuarios } from '../../store/actions/usuarios.actions';
 
 @Component({
 	selector: 'app-lista',
@@ -12,10 +14,13 @@ export class ListaComponent implements OnInit, OnDestroy {
 	private subs: Subscription = new Subscription();
 
 	usuarios: Usuario[] = [];
+	loading: boolean;
+	error: any = null;
 
-	constructor(private usuarioService: UsuarioService) {}
+	constructor(private store: Store<AppState>) {}
 
 	ngOnInit(): void {
+		this.store.dispatch(cargarUsuarios());
 		this.subs.add(this.getUsers());
 	}
 
@@ -24,6 +29,10 @@ export class ListaComponent implements OnInit, OnDestroy {
 	}
 
 	private getUsers() {
-		return this.usuarioService.getUsers().subscribe(data => (this.usuarios = data));
+		return this.store.select('usuarios').subscribe(({ users, loading, error }) => {
+			this.usuarios = users;
+			this.loading = loading;
+			this.error = error;
+		});
 	}
 }
