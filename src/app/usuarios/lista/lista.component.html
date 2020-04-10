@@ -1,0 +1,9 @@
+<div class="card-columns">
+    <div *ngFor="let usuario of usuarios" class="card">
+        <img [src]="usuario.avatar" class=" card-img-top" [alt]="usuario.first_name">
+        <div class="card-body">
+            <h5 class="card-title"> {{ usuario.first_name + ' ' + usuario.last_name }} </h5>
+            <p class="card-text"> {{ usuario.email }} </p>
+        </div>
+    </div>
+</div>
